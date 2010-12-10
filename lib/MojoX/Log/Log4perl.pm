@@ -4,7 +4,7 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new {
 	my ($class, $conf_file) = (@_);
@@ -121,9 +121,6 @@ __END__
 
 MojoX::Log::Log4perl - Log::Log4perl logging for Mojo/Mojolicious
 
-=head1 VERSION
-
-Version 0.02
 
 =head1 SYNOPSIS
 
