@@ -12,9 +12,9 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     PREREQ_PM => {
-        'Test::More'    => 0,
-        'Mojo'          => 0,
-        'Log::Log4perl' => 0,
+        'Test::More'    => 0.94,
+        'Mojo'          => 0.991251,
+        'Log::Log4perl' => 1.25,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'MojoX-Log-Log4perl-*' },
