@@ -24,21 +24,33 @@ sub new {
 }
 
 # Hmm. Ah, a picture of my mommy.
-sub trace { shift->_get_logger->trace(@_) }
-sub debug { shift->_get_logger->debug(@_) }
-sub info  { shift->_get_logger->info(@_)  }
-sub warn  { shift->_get_logger->warn(@_)  }
-sub error { shift->_get_logger->error(@_) }
-sub fatal { shift->_get_logger->fatal(@_) }
+{
+    no strict 'refs';
+    for my $level (
+      qw/ trace
+          debug
+          info
+          warn
+          error
+          fatal
+          logwarn
+          logdie
+          error_warn
+          error_die
+          logcarp
+          logcluck
+          logcroak
+          logconfess
+        / ) {
 
-sub logwarn    { shift->_get_logger->logwarn(@_)    }
-sub logdie     { shift->_get_logger->logdie(@_)     }
-sub error_warn { shift->_get_logger->error_warn(@_) }
-sub error_die  { shift->_get_logger->error_die(@_)  }
-sub logcarp    { shift->_get_logger->logcarp(@_)    }
-sub logcluck   { shift->_get_logger->logcluck(@_)   }
-sub logcroak   { shift->_get_logger->logcroak(@_)   }
-sub logconfess { shift->_get_logger->logconfess(@_) }
+        *{ __PACKAGE__ . "::$level" } =
+            sub {
+                local $Log::Log4perl::caller_depth =
+                   $Log::Log4perl::caller_depth + 1;
+                shift->_get_logger->$level(@_);
+            };
+    }
+}
 
 sub log {
     my ($self, $level, @msgs) = @_;
@@ -48,6 +60,8 @@ sub log {
     # Check
     $level = lc $level;
 	if ($level =~ m/^(?:trace|debug|info|warn|error|fatal)$/o) {
+        local $Log::Log4perl::caller_depth =
+            $Log::Log4perl::caller_depth + 1;
 		$logger->$level(@msgs);
 	}
 	
@@ -101,6 +115,7 @@ sub _get_logger {
 	return $logger;
 }
 
+1;
 __END__
 =head1 NAME
 
