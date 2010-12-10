@@ -4,7 +4,7 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
 	my ($class, $conf_file) = (@_);
@@ -81,23 +81,13 @@ sub is_level {
 sub level {
 	my ($self, $level) = (@_);
 	my $logger = $self->_get_logger;
-    
+
+    require Log::Log4perl::Level;
     if ($level) {
-		require Log::Log4perl::Level;
-		no warnings;
-    	my %map = (
-    		'trace' => $Log::Log4perl::Level::TRACE,
-    		'debug' => $Log::Log4perl::Level::DEBUG,
-    		'info'  => $Log::Log4perl::Level::INFO,
-    		'warn'  => $Log::Log4perl::Level::WARN,
-    		'error' => $Log::Log4perl::Level::ERROR,
-    		'fatal' => $Log::Log4perl::Level::FATAL,
-    	);
-    	use warnings;
-    	return $logger->level($map{lc $level})
+    	return $logger->level( Log::Log4perl::Level::to_priority(uc $level) );
     }
     else {
-		return $logger->level();
+		return Log::Log4perl::Level::to_level( $logger->level() );
     }
 }
 
@@ -118,7 +108,7 @@ MojoX::Log::Log4perl - Log::Log4perl logging for Mojo/Mojolicious
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =head1 SYNOPSIS
 
@@ -138,7 +128,7 @@ In lib/MyApp.pm:
   
   $self->log( MojoX::Log::Log4perl->new('example.conf') );
 
-And later...
+And later, inside any Mojo/Mojolicious module...
 
   $c->app->log->debug("This is using log4perl!");
 
@@ -147,7 +137,7 @@ And later...
 
 This module provides a Mojo::Log implementation that uses Log::Log4perl as the underlying log mechanism. It provides all the methods listed in Mojo::Log (and many more from Log4perl - see below), so, if you already use Mojo::Log in your application, there is no need to change a single line of code!
 
-These methods will all instantiate a logger with the component set to the package that called it. For example, if you were in the MyApp::Main package, the following:
+There will be a logger component set for the package that called it. For example, if you were in the MyApp::Main package, the following:
 
   package MyApp::Main;
   use base 'Mojolicious::Controller';
@@ -159,9 +149,18 @@ These methods will all instantiate a logger with the component set to the packag
       $logger->debug("Woot!");
   }
 
-Would send a message to the Myapp.Main Log::Log4perl component.
+Would send a message to the C<< Myapp.Main >> Log4perl component. This allows you to seamlessly use Log4perl with Mojo/Mojolicious applications, being able to setup everything from the configuration file. For example, in this case, we could have the following C<< log4perl.conf >> file:
 
-See Log::Log4perl for more information on how to configure different logging mechanisms based on the component.
+  # setup default log level and appender
+  log4perl.rootLogger = DEBUG, FOO
+  log4perl.appender.FOO = Log::Log4perl::Appender::File
+  log4perl.appender.FOO.layout
+
+  # setup so MyApp::Main only logs fatal errors
+  log4perl.logger.MyApp.Main = FATAL
+
+See L<< Log::Log4perl >> and L<< Log::Log4perl::Config >> for more information on how to configure different logging mechanisms based on the component.
+
 
 =head1 INSTANTIATION
 
@@ -169,9 +168,21 @@ See Log::Log4perl for more information on how to configure different logging mec
 
 =head2 new($config)
 
-    This builds a new MojoX::Log::Log4perl object. If you provide an argument to new(), it will be passed directly to Log::Log4perl::init.
+This builds a new MojoX::Log::Log4perl object. If you provide an argument to new(), it will be passed directly to Log::Log4perl::init.
+    
+What you usually do is pass a file name with your Log4perl configuration. But you can also pass a hash reference with keys and values set as Log4perl configuration elements (i.e. left side of '=' vs. right side).
+
+If you don't give it any arguments, the following default configuration is set:
+
+  log4perl.rootLogger = DEBUG, SCREEN
+  log4perl.appender.SCREEN = Log::Log4perl::Appender::Screen
+  log4perl.appender.SCREEN.layout' = PatternLayout
+  log4perl.appender.SCREEN.layout.ConversionPattern = [%d] [mojo] [%p] %m%n
+
 
 =head1 LOG LEVELS
+
+  $logger->warn("something's wrong");
 
 Below are all log levels from MojoX::Log::Log4perl, in descending priority:
 
@@ -198,6 +209,10 @@ You can also use the C<< log() >> method just like in C<< Mojo::Log >>:
 But nobody does that, really.
 
 =head1 CHECKING LOG LEVELS
+
+  if ($logger->is_debug) {
+      # expensive debug here
+  }
 
 As usual, you can (and should) avoid doing expensive log calls by checking the current log level:
 
@@ -290,9 +305,9 @@ The original C<handle> and C<path> attributes from C<< Mojo::Log >> are not impl
 
   my $level = $logger->level();
   
-This will return the current log level (C<debug>, C<info>, ...). You can also use this to force a level:
+This will return an UPPERCASED string with the current log level (C<'DEBUG'>, C<'INFO'>, ...). You can also use this to force a level of your choosing:
 
-  $logger->level('warn');  # forces 'debug' level
+  $logger->level('warn');  # forces 'warn' level (case-insensitive)
 
 But you really shouldn't do that at all, as it breaks log4perl's configuration structure. The whole point of Log4perl is letting you setup your logging from outside your code. So, once again: don't do this.
 
