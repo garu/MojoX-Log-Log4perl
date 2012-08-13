@@ -1,5 +1,8 @@
 Revision history for MojoX-Log-Log4perl
 
+0.05    2012-08-13
+        Log methods now return $self (Thanks Bob "Stocks" Stockdale for reporting)
+
 0.04    2011-10-28
         Added option to initialize via init_and_watch() (Marius Kjeldahl)
 

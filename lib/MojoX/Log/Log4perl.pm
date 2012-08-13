@@ -4,7 +4,7 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
@@ -237,6 +237,8 @@ Below are all log levels from MojoX::Log::Log4perl, in descending priority:
 
 Just like C<< Log::Log4perl >>: "If your configured logging level is WARN, then messages logged with info(), debug(), and trace() will be suppressed. fatal(), error() and warn() will make their way through, because their priority is higher or equal than the configured setting."
 
+The return value is the log object itself, to allow method chaining and further manipulation.
+
 =head2 C<log>
 
 You can also use the C<< log() >> method just like in C<< Mojo::Log >>:
@@ -244,6 +246,8 @@ You can also use the C<< log() >> method just like in C<< Mojo::Log >>:
   $logger->log( info => 'I can haz cheezburger');
 
 But nobody does that, really.
+
+As with the regular logging methods, the return value is the log object itself.
 
 =head1 CHECKING LOG LEVELS
 
@@ -402,7 +406,7 @@ L<< Log::Log4perl >>, L<< Mojo::Log >>, L<< Mojo >>, L<< Mojolicious >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009-2011 Breno G. de Oliveira, all rights reserved.
+Copyright 2009-2012 Breno G. de Oliveira, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
