@@ -1,5 +1,8 @@
 Revision history for MojoX-Log-Log4perl
 
+0.04    2011-10-28
+        Added option to initialize via init_and_watch() (Marius Kjeldahl)
+
 0.03    2010-12-10
         Fixed caller depth for %F and friends (BDUGGAN)
 

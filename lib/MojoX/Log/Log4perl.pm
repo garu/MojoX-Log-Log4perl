@@ -4,10 +4,10 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub new {
-	my ($class, $conf_file) = (@_);
+	my ($class, $conf_file, $watch) = (@_);
 	
 	$conf_file ||= {
 		'log4perl.rootLogger' => 'DEBUG, SCREEN',
@@ -16,7 +16,12 @@ sub new {
 		'log4perl.appender.SCREEN.layout.ConversionPattern' => '[%d] [mojo] [%p] %m%n',
 	};
 	
-	Log::Log4perl->init_once($conf_file);
+	if ($watch) {
+		Log::Log4perl::init_and_watch($conf_file, $watch);
+	}
+	else {
+		Log::Log4perl->init_once($conf_file);
+	}
 
 	my $self = {};
 	bless $self, $class;
@@ -140,6 +145,17 @@ In lib/MyApp.pm:
   
   $self->log( MojoX::Log::Log4perl->new('example.conf') );
 
+  # you can even make it periodically check for changes in the
+  # configuration file and automatically reload them while your
+  # app is still running!
+
+  # check for changes every 10 seconds
+  $self->log( MojoX::Log::Log4perl->new('example.conf', 10)    );
+
+  # or check for changes only upon receiving SIGHUP
+  $self->log( MojoX::Log::Log4perl->new('example.conf', 'HUP') );
+
+
 And later, inside any Mojo/Mojolicious module...
 
   $c->app->log->debug("This is using log4perl!");
@@ -190,6 +206,14 @@ If you don't give it any arguments, the following default configuration is set:
   log4perl.appender.SCREEN = Log::Log4perl::Appender::Screen
   log4perl.appender.SCREEN.layout' = PatternLayout
   log4perl.appender.SCREEN.layout.ConversionPattern = [%d] [mojo] [%p] %m%n
+
+=head2 new( $config, $delay )
+
+As as optional second argument to C<new()>, you can set a delay in seconds that will be passed directly to Log::Log4perl::init_and_watch. This makes Log4perl check every C<$delay> seconds for changes in the configuration file, and reload it if the file modification time is different.
+
+You can also define a signal to watch and Log4perl will setup a signal handler to check the configuration file again only when that particular signal is received by the application, for example via the C<kill> command:
+
+  kill -HUP pid
 
 
 =head1 LOG LEVELS
@@ -377,7 +401,7 @@ L<< Log::Log4perl >>, L<< Mojo::Log >>, L<< Mojo >>, L<< Mojolicious >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009 Breno G. de Oliveira, all rights reserved.
+Copyright 2009-2011 Breno G. de Oliveira, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
