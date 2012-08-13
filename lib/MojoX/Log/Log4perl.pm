@@ -50,9 +50,11 @@ sub new {
 
         *{ __PACKAGE__ . "::$level" } =
             sub {
+                my $self = shift;
                 local $Log::Log4perl::caller_depth =
                    $Log::Log4perl::caller_depth + 1;
-                shift->_get_logger->$level(@_);
+                $self->_get_logger->$level(@_);
+                return $self;
             };
     }
 }
