@@ -58,19 +58,18 @@ sub new {
 }
 
 sub log {
-    my ($self, $level, @msgs) = @_;
+	my ($self, $level, @msgs) = @_;
 
 	my $logger = $self->_get_logger();
     
-    # Check
-    $level = lc $level;
+	# Check
+	$level = lc $level;
 	if ($level =~ m/^(?:trace|debug|info|warn|error|fatal)$/o) {
-        local $Log::Log4perl::caller_depth =
-            $Log::Log4perl::caller_depth + 1;
+		local $Log::Log4perl::caller_depth =
+		   $Log::Log4perl::caller_depth + 1;
 		$logger->$level(@msgs);
 	}
-	
-    return $self;
+	return $self;
 }
 
 sub is_trace { shift->_get_logger->is_trace }
@@ -101,22 +100,22 @@ sub level {
 	my ($self, $level) = (@_);
 	my $logger = $self->_get_logger;
 
-    require Log::Log4perl::Level;
-    if ($level) {
-    	return $logger->level( Log::Log4perl::Level::to_priority(uc $level) );
-    }
-    else {
+	require Log::Log4perl::Level;
+	if ($level) {
+		return $logger->level( Log::Log4perl::Level::to_priority(uc $level) );
+	}
+	else {
 		return Log::Log4perl::Level::to_level( $logger->level() );
-    }
+	}
 }
 
 sub _get_logger {
-    # get our caller
-    my ($pkg, $line) = (caller())[0, 2];
-    ($pkg, $line) = (caller(1))[0, 2] if $pkg eq ref shift;
+	# get our caller
+	my ($pkg, $line) = (caller())[0, 2];
+	($pkg, $line) = (caller(1))[0, 2] if $pkg eq ref shift;
 
-    # get correct logger for our caller
-    my $logger = Log::Log4perl->get_logger($pkg);
+	# get correct logger for our caller
+	my $logger = Log::Log4perl->get_logger($pkg);
 	return $logger;
 }
 
