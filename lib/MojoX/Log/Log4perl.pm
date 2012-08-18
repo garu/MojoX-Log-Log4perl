@@ -205,7 +205,7 @@ If you don't give it any arguments, the following default configuration is set:
 
   log4perl.rootLogger = DEBUG, SCREEN
   log4perl.appender.SCREEN = Log::Log4perl::Appender::Screen
-  log4perl.appender.SCREEN.layout' = PatternLayout
+  log4perl.appender.SCREEN.layout = PatternLayout
   log4perl.appender.SCREEN.layout.ConversionPattern = [%d] [mojo] [%p] %m%n
 
 =head2 new( $config, $delay )
