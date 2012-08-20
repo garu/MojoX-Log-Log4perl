@@ -13,7 +13,7 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'    => 0.94,
-        'Mojolicious'   => 0.999920,
+        'Mojolicious'   => 2.0,
         'Log::Log4perl' => 1.25,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
