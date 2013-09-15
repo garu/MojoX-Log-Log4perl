@@ -1,5 +1,5 @@
 use Mojo::Base -strict;
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 use File::Spec::Functions 'catdir';
 use File::Temp 'tempdir';
@@ -30,8 +30,14 @@ my $content = Mojo::Asset::File->new(path => $path)->slurp;
 
 like(
   $content,
-  qr/^\[DEBUG\] main:21 - Just works\.\n\[DEBUG\] main:22 - told ya!$/s,
-  'right content'
+  qr/\[DEBUG\] main:21 - Just works\./,
+  'right content (1)',
+);
+
+like(
+  $content,
+  qr/\[DEBUG\] main:22 - told ya!/,
+  'right content (2)',
 );
 
 unlike(
