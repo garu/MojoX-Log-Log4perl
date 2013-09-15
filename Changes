@@ -1,5 +1,9 @@
 Revision history for MojoX-Log-Log4perl
 
+0.07    2013-09-15
+        Fixed test issue on Win32 (thanks Graham "plicease" Ollis
+        for reporting and proving a patch)
+
 0.06    2012-08-20
         Fixed typo in pod example code (Spiros Denaxas)
         Updated code to make use of Mojolicious' event emitter
