@@ -16,6 +16,13 @@ WriteMakefile(
         'Mojolicious'   => 2.0,
         'Log::Log4perl' => 1.25,
     },
+    META_MERGE      => {
+        resources => {
+            license     =>      'http://dev.perl.org/licenses/',
+            bugtracker  =>      'http://rt.cpan.org/NoAuth/Bugs.html?Dist=MojoX-Log-Log4perl',
+            repository  =>      'http://github.com/garu/MojoX-Log-Log4perl',
+        },
+    },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'MojoX-Log-Log4perl-*' },
 );
