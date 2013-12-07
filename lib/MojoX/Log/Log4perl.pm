@@ -195,7 +195,7 @@ If you don't give it any arguments, the following default configuration is set:
 
 =head2 new( $config, $delay )
 
-As optional second argument to C<new()>, you can set a delay in seconds that will be passed directly to Log::Log4perl::init_and_watch. This makes Log4perl check every C<$delay> seconds for changes in the configuration file, and reload it if the file modification time is different.
+As an optional second argument to C<new()>, you can set a delay in seconds that will be passed directly to Log::Log4perl::init_and_watch. This makes Log4perl check every C<$delay> seconds for changes in the configuration file, and reload it if the file modification time is different.
 
 You can also define a signal to watch and Log4perl will setup a signal handler to check the configuration file again only when that particular signal is received by the application, for example via the C<kill> command:
 
