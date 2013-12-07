@@ -5,7 +5,7 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
