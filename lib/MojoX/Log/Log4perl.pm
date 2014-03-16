@@ -10,6 +10,11 @@ our $VERSION = '0.08';
 has history          => sub { [] };
 has max_history_size => 10;
 
+# development notes: Mojo::Log provides 'path' 'handle' and 'format'
+# to handle log location and formatting. Those make no sense in a Log4perl
+# environment (where you can set appenders as you wish) so they are
+# not implemented here.
+
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
 	
