@@ -334,18 +334,33 @@ Finally, there's the Carp functions that do just what the Carp functions do, but
 
 =head1 ATTRIBUTES
 
-The original C<handle> and C<path> attributes from C<< Mojo::Log >> are not implemented as they make little sense in a Log4perl environment. The only attribute available, therefore, is C<level>.
+The original C<handle> and C<path> attributes from C<< Mojo::Log >> are not implemented as they make little sense in a Log4perl environment. The following attributes are still available:
 
 =head2 C<level>
 
   my $level = $logger->level();
   
-This will return an UPPERCASED string with the current log level (C<'DEBUG'>, C<'INFO'>, ...). You can also use this to force a level of your choosing:
+This will return an UPPERCASED string with the current log level (C<'DEBUG'>, C<'INFO'>, ...).
+
+Note: You can also use this to force a level of your choosing:
 
   $logger->level('warn');  # forces 'warn' level (case-insensitive)
 
-But you really shouldn't do that at all, as it breaks log4perl's configuration structure. The whole point of Log4perl is letting you setup your logging from outside your code. So, once again: don't do this.
+But you really shouldn't do that at all, as it breaks log4perl's configuration structure. The whole point of Log4perl is letting you setup your logging from outside your code. So, once again: B<don't do this>.
 
+=head2 C<history>
+
+This returns the last few logged messages as an array reference in the format:
+
+    [
+        [ 'timestamp', 'level', 'message' ], # older first
+        [ 'timestamp', 'level', 'message' ],
+        ...
+    ]
+
+=head2 C<max_history_size>
+
+Maximum number of messages to be kept in the history buffer (see above). Defaults to 10.
 
 =head1 AUTHOR
 
