@@ -70,7 +70,7 @@ You can also look for information at:
 COPYRIGHT AND LICENCE
 ---------------------
 
-Copyright (C) 2009 Breno G. de Oliveira
+Copyright (C) 2009-2014 Breno G. de Oliveira
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

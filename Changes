@@ -1,5 +1,9 @@
 Revision history for MojoX-Log-Log4perl
 
+0.09	2014-03-16
+	- new history() and max_history_size() to stay up-to-date
+	  with Mojolicious's log expectations (thanks Olivier Duclos)
+
 0.08    2013-12-07
         - typo fixes in the documentation (thanks David Steinbrunner for
           spotting and fixing them)
