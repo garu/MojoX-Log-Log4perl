@@ -7,5 +7,7 @@ t/00-load.t
 t/01-standard.t
 t/02-justworks.t
 t/03-events.t
+t/04-log.t
+t/05-app.t
 xt/pod-coverage.t
 xt/pod.t
