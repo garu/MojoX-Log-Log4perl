@@ -7,6 +7,9 @@ use strict;
 
 our $VERSION = '0.08';
 
+has history          => sub { [] };
+has max_history_size => 10;
+
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
 	
@@ -62,7 +65,13 @@ sub _message {
 	local $Log::Log4perl::caller_depth
       = $Log::Log4perl::caller_depth + $depth;
 
-	$self->_get_logger( $depth )->$level( @message );
+	if ($self->_get_logger( $depth )->$level( @message )) {
+		my $history = $self->history;
+		my $max     = $self->max_history_size;
+		push @$history => [ time, $level, @message ];
+		splice (@$history, 0, scalar @$history - $max)
+		    if scalar @$history > $max;
+	}
 	return $self;
 }
 

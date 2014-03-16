@@ -1,4 +1,4 @@
-use Test::More tests => 26;
+use Test::More tests => 27;
 
 # class tests
 can_ok('MojoX::Log::Log4perl', qw(new log));
@@ -12,6 +12,7 @@ can_ok('MojoX::Log::Log4perl', qw(is_trace is_debug is_info is_warn
       );
 can_ok('MojoX::Log::Log4perl', qw(level is_level));
 
+can_ok('MojoX::Log::Log4perl', qw(history max_history_size));
 
 use MojoX::Log::Log4perl;
 my $logger = MojoX::Log::Log4perl->new;
