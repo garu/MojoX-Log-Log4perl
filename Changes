@@ -1,5 +1,9 @@
 Revision history for MojoX-Log-Log4perl
 
+0.10    2014-08-11
+    - basic support for Mojo::Log's format(), to prevent the
+      default 404 page from croaking (thanks Sergei Khomutov)
+
 0.09	2014-03-16
 	- new history() and max_history_size() to stay up-to-date
 	  with Mojolicious's log expectations (thanks Olivier Duclos)

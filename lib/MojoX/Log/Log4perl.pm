@@ -14,17 +14,23 @@ has max_history_size => 10;
 # to handle log location and formatting. Those make no sense in a Log4perl
 # environment (where you can set appenders as you wish) so they are
 # not implemented here.
+sub path   { warn 'path() is not implemented in MojoX::Log::Log4perl. Please use appenders.'   }
+sub handle { warn 'handle() is not implemented in MojoX::Log::Log4perl. Please use appenders.' }
+sub format {
+    warn 'format() is not properly implemented in MojoX::Log::Log4perl. Please use appenders.';
+    return sub { '[' . localtime(shift) . '] [' . shift() . '] ' . join("\n", @_, '') };
+}
 
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
-	
+
 	$conf_file ||= {
 		'log4perl.rootLogger' => 'DEBUG, SCREEN',
 		'log4perl.appender.SCREEN' => 'Log::Log4perl::Appender::Screen',
 		'log4perl.appender.SCREEN.layout' => 'PatternLayout',
 		'log4perl.appender.SCREEN.layout.ConversionPattern' => '[%d] [mojo] [%p] %m%n',
 	};
-	
+
 	if ($watch) {
 		Log::Log4perl::init_and_watch($conf_file, $watch);
 	}
@@ -92,7 +98,7 @@ sub is_fatal { shift->_get_logger->is_fatal }
 sub is_level {
 	my ($self, $level) = (@_);
 	return 0 unless $level;
-	
+
 	if ($level =~ m/^(?:trace|debug|info|warn|error|fatal)$/o) {
 		my $is_level = "is_$level";
 		return $self->_get_logger->$is_level;
@@ -339,7 +345,13 @@ Finally, there's the Carp functions that do just what the Carp functions do, but
 
 =head1 ATTRIBUTES
 
-The original C<handle> and C<path> attributes from C<< Mojo::Log >> are not implemented as they make little sense in a Log4perl environment. The following attributes are still available:
+=head2 Differences from Mojo::Log
+
+The original C<handle> and C<path> attributes from C<< Mojo::Log >> are not implemented as they make little sense in a Log4perl environment, and will trigger a warning if you try to use them.
+
+The C<format> attribute is also not implemented, and will trigger a warning when used. For compatibility with Mojolicious' current I<404> development page, this attribute will work returning a basic formatted message as I<"[ date ] [ level ] message">. We do B<not> recommend you to rely on this as we may remove it in the future. Please use Log4perl's layout formatters instead.
+
+The following attributes are still available:
 
 =head2 C<level>
 
