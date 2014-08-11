@@ -6,6 +6,25 @@ as the underlying log mechanism. It provides all the methods listed in
 Mojo::Log (and many more from Log4perl) so, if you already use Mojo::Log
 in your application, there is no need to change a single line of code!
 
+```perl
+    package MyApp;
+    use Mojo::Base 'Mojolicious';
+    use MojoX::Log::Log4perl;
+
+    sub startup {
+        my $self = shift;
+
+        # that's all the extra code you need!
+        $self->log( MojoX::Log::Log4perl->new );
+
+        # next, just set up your app's routes as you normally would
+    }
+```
+
+Now all your logging can be controlled via the ```log4perl.conf``` file :)
+
+See the module's documentation for extra information and available methods.
+
 
 INSTALLATION
 ------------
