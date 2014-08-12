@@ -10,6 +10,9 @@ WriteMakefile(
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'perl')
       : ()),
+    ($ExtUtils::MakeMaker::VERSION >= 6.48
+      ? ('MIN_PERL_VERSION' => 5.010001)
+      : ()),
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'    => 0.94,
