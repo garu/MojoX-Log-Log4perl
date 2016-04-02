@@ -12,8 +12,15 @@ has max_history_size => 10;
 
 # development notes: Mojo::Log provides 'path' 'handle' and 'format'
 # to handle log location and formatting. Those make no sense in a Log4perl
-# environment (where you can set appenders as you wish) so they are
-# not implemented here.
+# environment (where you can set appenders as you wish) so 'path and 'handle'
+# not implemented here; 'format' simply returns the passed-in strings joined by
+# newlines as otherwise Mojo::Log complains (RT #98034).
+
+sub format {
+#    warn 'format() is not properly implemented in MojoX::Log::Log4perl. Please use appenders.';
+#    return sub { '[' . localtime(shift) . '] [' . shift() . '] ' . join("\n", @_, '') };
+    return sub { join("\n", @_, '') };
+}
 
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
