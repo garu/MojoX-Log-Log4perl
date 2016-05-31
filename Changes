@@ -1,5 +1,9 @@
 Revision history for MojoX-Log-Log4perl
 
+0.11    2016-05-30
+    - show format() warning only once per run (thanks Chris Foote
+      for reporting the issue and Brad Macpherson for the patch)
+
 0.10    2014-08-11
     - basic support for Mojo::Log's format(), to prevent the
       default 404 page from croaking (thanks Sergei Khomutov)
