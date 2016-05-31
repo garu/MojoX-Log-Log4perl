@@ -438,7 +438,7 @@ L<< Log::Log4perl >>, L<< Mojo::Log >>, L<< Mojo >>, L<< Mojolicious >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009-2014 Breno G. de Oliveira, all rights reserved.
+Copyright 2009-2016 Breno G. de Oliveira, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
