@@ -5,7 +5,7 @@ use Log::Log4perl;
 use warnings;
 use strict;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 has history          => sub { [] };
 has max_history_size => 10;
