@@ -27,6 +27,11 @@ sub format {
     return sub { '[' . localtime(shift) . '] [' . shift() . '] ' . join("\n", @_, '') };
 }
 
+# development notes: Mojo::Log provides 'context'
+# Mojo::Log (Mojolicious 8.23) was updated to add method context which 
+# needs to exist here or we die
+sub context {}
+
 sub new {
 	my ($class, $conf_file, $watch) = (@_);
 
